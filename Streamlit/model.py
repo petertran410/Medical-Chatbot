@@ -68,7 +68,7 @@ def main():
     st.set_page_config(page_title="Medical Chatbot")
 
     with st.sidebar:
-        st.title('Medical Chatbot!')
+        st.title('AIoT Medical Chatbot!')
         st.markdown('''
         Hi
         ''')
@@ -111,7 +111,7 @@ def main():
 
     conversation = st.session_state.get("conversation", [])
 
-    query = st.text_input("Ask your question here:", key="user_input")
+    query = st.text_input("Please input your question here:", key="user_input")
     if st.button("Get Answer"):
         if query:
             # Display the processing message
