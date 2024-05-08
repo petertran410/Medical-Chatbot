@@ -1,4 +1,5 @@
-1. Type `git clone`
+1. python -m venv venv
+source venv/bin/activate  # On Windows, use: venv\Scripts\activate
 ```
 Press Enter to create your local clone.
 2. Install the pip packages in requirements.txt

@@ -48,7 +48,7 @@ def load_llm():
 
 def qa_bot(query):
     embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2",
-                                       model_kwargs={'device': 'cpu'})
+                                       model_kwargs={'device': 'gpu'})
     db = FAISS.load_local(DB_FAISS_PATH, embeddings)
     llm = load_llm()
     qa_prompt = set_custom_prompt()
