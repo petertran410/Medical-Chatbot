@@ -1,8 +1,7 @@
 1.
+Install venv
 
 ```
-
-Install venv
 python -m venv venv
 
 ```

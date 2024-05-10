@@ -7,6 +7,7 @@ from langchain.llms import CTransformers
 from langchain.chains import RetrievalQA
 
 DB_FAISS_PATH = 'vectorstores/db_faiss'
+# DB_FAISS_PATH = 'vectorstores/db_IU'
 
 custom_prompt_template = """Use the following pieces of information to answer the user's question.
 If you don't know the answer, just say that you don't know, don't try to make up an answer.
@@ -48,7 +49,7 @@ def load_llm():
 
 def qa_bot(query):
     embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2",
-                                       model_kwargs={'device': 'gpu'})
+                                       model_kwargs={'device': 'cpu'})
     db = FAISS.load_local(DB_FAISS_PATH, embeddings)
     llm = load_llm()
     qa_prompt = set_custom_prompt()
