@@ -2,10 +2,14 @@ import pickle
 import faiss
 from sklearn.feature_extraction.text import TfidfVectorizer
 from PyPDF2 import PdfFileReader
+from faiss import write_index, read_index, serialize_index, deserialize_index
+import numpy as np
+import os
 
 # Step 1: Extract text from PDF
-pdf_path = "71763-gale-encyclopedia-of-medicine.-vol.-1.-2nd-ed.pdf"
+# pdf_path = "71763-gale-encyclopedia-of-medicine.-vol.-1.-2nd-ed.pdf"
 # pdf_path = "NE-Syllabus.pdf"
+pdf_path = "MusicLyrics.pdf"
 
 
 def extract_text_from_pdf(pdf_path):
@@ -16,6 +20,7 @@ def extract_text_from_pdf(pdf_path):
             page = pdf_reader.getPage(page_num)
             text += page.extractText()
     return text
+
 
 extracted_text = extract_text_from_pdf(pdf_path)
 
@@ -38,7 +43,8 @@ def vectorize_text(text):
     tfidf_vectorizer = TfidfVectorizer()
     vectorized_text = tfidf_vectorizer.fit_transform([text])
     return vectorized_text
-  
+
+
 print("\nStep 2: Text vectorized:")
 vectorized_text = vectorize_text(extracted_text)
 print(vectorized_text)
@@ -49,32 +55,46 @@ print(vectorized_text)
 def build_faiss_index(vectorized_text):
     # Convert scipy sparse matrix to numpy array
     vectorized_text = vectorized_text.toarray()
+    vectorized_text = vectorized_text.astype("float32", casting="same_kind")
     # Initialize FAISS index
-    index = faiss.IndexFlatL2(vectorized_text.shape[1])  # L2 distance metric
+    index = faiss.IndexFlatL2(vectorized_text.shape[1])
+    # # L2 distance metric
+    # index = faiss.IndexFlatIP(vectorized_text.shape[1])
     # Add vectors to the index
     index.add(vectorized_text)
     return index
-  
+
+
 print("\nStep 3: FAISS index built:")
 index = build_faiss_index(vectorized_text)
 print(index)
 
 # Step 4: Save index and text representation in pickle file
+write_index(index, "index.faiss")
+read_index("index.faiss")
 
-def save_index_and_text_representation(index, vectorized_text, index_file, text_file):
-    with open(index_file, "wb") as f:
-        pickle.dump(index, f)
-    with open(text_file, "wb") as f:
-        pickle.dump(vectorized_text, f)
+serialized_index = serialize_index(index)
 
-def convert_pdf_to_faiss_and_pkl(pdf_path, index_file, text_file):
-    text = extract_text_from_pdf(pdf_path)
-    vectorized_text = vectorize_text(text)
-    index = build_faiss_index(vectorized_text)
-    save_index_and_text_representation(index, vectorized_text, index_file, text_file)
+with open("index.pkl", "wb") as f:
+    pickle.dump(serialized_index, f)
+with open("index.pkl", "rb") as f:
+    deserialize_index(pickle.load(f))
+
+
+# def save_index_and_text_representation(index, vectorized_text, index_file, text_file):
+#     with open(index_file, "wb") as f:
+#         pickle.dump(index, f)
+#     with open(text_file, "wb") as f:
+#         pickle.dump(vectorized_text, f)
+
+# def convert_pdf_to_faiss_and_pkl(pdf_path, index_file, text_file):
+#     text = extract_text_from_pdf(pdf_path)
+#     vectorized_text = vectorize_text(text)
+#     index = build_faiss_index(vectorized_text)
+#     save_index_and_text_representation(index, vectorized_text, index_file, text_file)
 
 # Usage
 
-index_file = "index.faiss"
-text_file = "index.pkl"
-convert_pdf_to_faiss_and_pkl(pdf_path, index_file, text_file)
+# index_file = "index.faiss"
+# text_file = "index.pkl"
+# convert_pdf_to_faiss_and_pkl(pdf_path, index_file, text_file)
