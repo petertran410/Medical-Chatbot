@@ -7,7 +7,7 @@ import os
 from langchain.vectorstores import FAISS
 from langchain.embeddings import HuggingFaceEmbeddings
 
-pdf_path = "NE-Syllabus.pdf"
+pdf_path = "data/NE-Syllabus.pdf"
 
 
 def extract_text_from_pdf(pdf_path):
