@@ -6,8 +6,7 @@ from langchain.vectorstores import FAISS
 from langchain.llms import CTransformers
 from langchain.chains import RetrievalQA
 
-# DB_FAISS_PATH = 'vectorstores/db_faiss'
-DB_FAISS_PATH = 'D:\Code\Medical-Chatbot\data'
+DB_FAISS_PATH = 'vectorstores/db_faiss'
 
 custom_prompt_template = """Use the following pieces of information to answer the user's question.
 If you don't know the answer, just say that you don't know, don't try to make up an answer.
@@ -66,10 +65,10 @@ def add_vertical_space(spaces=1):
 
 
 def main():
-    st.set_page_config(page_title="Medical Chatbot")
+    st.set_page_config(page_title="AIoTLab NE Syllabus")
 
     with st.sidebar:
-        st.title('AIoT Medical Chatbot!')
+        st.title('AIoTLab NE Syllabus')
         st.markdown('''
         Hi
         ''')
@@ -77,7 +76,7 @@ def main():
         st.write(
             'AIoT Lab')
 
-    st.title("Medical Chatbot")
+    st.title("AIoTLab NE Syllabus")
     st.markdown(
         """
         <style>

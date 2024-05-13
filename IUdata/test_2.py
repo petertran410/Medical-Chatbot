@@ -7,7 +7,6 @@ import os
 from langchain.vectorstores import FAISS
 from langchain.embeddings import HuggingFaceEmbeddings
 
-# pdf_path = "MusicLyrics.pdf"
 pdf_path = "NE-Syllabus.pdf"
 
 
