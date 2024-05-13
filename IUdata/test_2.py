@@ -1,6 +1,5 @@
 import pickle
 import faiss
-from openai import embeddings
 from sklearn.feature_extraction.text import TfidfVectorizer
 from PyPDF2 import PdfReader
 import numpy as np
