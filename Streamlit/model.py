@@ -76,22 +76,20 @@ config = PeftConfig.from_pretrained(peft_model_id)
 model = AutoModelForCausalLM.from_pretrained(
     config.base_model_name_or_path, return_dict=True, load_in_4bit=True, device_map=device)
 
-print(model)
+tokenizer = AutoTokenizer.from_pretrained(config.base_model_name_or_path)
 
-# tokenizer = AutoTokenizer.from_pretrained(config.base_model_name_or_path)
-
-# # Load the Lora model
-# model = PeftModel.from_pretrained(model, peft_model_id)
+# Load the Lora model
+model = PeftModel.from_pretrained(model, peft_model_id)
 
 
-# pipe = pipeline(task="text-generation",
-#                 model=model,
-#                 tokenizer=tokenizer, max_length=300)
+pipe = pipeline(task="text-generation",
+                model=model,
+                tokenizer=tokenizer, max_length=300)
 
-# prompt = "What is the mission of the School of Computer Science and Engineering?"
+prompt = "What is the mission of the School of Computer Science and Engineering?"
 
-# result = pipe(f"<s>[INST] {prompt} [/INST]")
-# print(result[0]['generated_text'].split("[/INST]")[1])
+result = pipe(f"<s>[INST] {prompt} [/INST]")
+print(result[0]['generated_text'].split("[/INST]")[1])
 
 ############################################################
 ############################################################
@@ -161,7 +159,7 @@ print(model)
 #         """, unsafe_allow_html=True)
 
 #     conversation = st.session_state.get("conversation", [])
-
+   
 #     query = st.text_input("Please input your question here:", key="user_input")
 #     result = pipe(f"<s>[INST] {query} [/INST]")
 #     if st.button("Get Answer"):
@@ -170,7 +168,7 @@ print(model)
 #             with st.spinner("Processing your question..."):
 #                 conversation.append({"role": "user", "message": query})
 #                 # Call your QA function
-#                 answer = result
+#                 answer = result[0]['generated_text'].split("[/INST]")[1]
 #                 conversation.append({"role": "bot", "message": answer})
 #                 st.session_state.conversation = conversation
 #         else:
