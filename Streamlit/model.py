@@ -48,7 +48,7 @@ def load_llm():
 
 def qa_bot(query):
     # sentence-transformers/all-MiniLM-L6-v2
-    embeddings = HuggingFaceEmbeddings(model_name="imdeadinside410/Llama2-Syllabus",
+    embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2",
                                        model_kwargs={'device': 'cpu'})
     db = FAISS.load_local(DB_FAISS_PATH, embeddings)
     llm = load_llm()
